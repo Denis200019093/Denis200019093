@@ -3,11 +3,11 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Button } from '@material-ui/core';
 
 import { addToCart } from '../../redux/actions/cartActions'
-import { like, unlike, getUsers, getLikes } from '../../redux/actions/formActions'
+import { getUsers, getLikes, like, unlike } from '../../redux/actions/userActions'
 
 function CardItem({item}) {
 
-    const authUser = JSON.parse(localStorage.getItem('AUTH_USER') || '[]')
+    const authUserLS = JSON.parse(localStorage.getItem('AUTH_USER') || '[]')
 
     const dispatch = useDispatch()
     useEffect(() => {
@@ -15,29 +15,32 @@ function CardItem({item}) {
     }, [dispatch])
 
     useEffect(() => {
-        dispatch(getLikes(authUser.id))
-    }, [dispatch, authUser.id])
+        dispatch(getLikes(authUserLS.id))
+    }, [dispatch, authUserLS.id])
 
     
     const cart = useSelector(state => state.cart.cart)
 
-    const checkUsers = useSelector(state => state.auth.users)
-    const checkLikes = useSelector(state => state.auth.likes)
+    const checkUsers = useSelector(state => state.users.users)
+    const checkLikes = useSelector(state => state.users.likes)
 
-    const userasd = checkUsers.find(el => el.id === item.id)
-    const likeasd = checkLikes.find(el => el.id === item.id)
+    const userasd = checkUsers.find(el => el.title === item.title)
+    const likeasd = checkLikes.find(el => el.title === item.title)
 
-    console.log(checkUsers);
-    console.log(checkLikes);
     return (
         <div className='card-item' key={item.id}>
-            <span>{item.likes}</span>
-            <img src={item.img} alt='alt'/>
-            <span>{item.title}</span>
-            {/* <Button onClick={() => dispatch(like(authUser.id, item, checkLikes))}>Like</Button> */}
+            <div className='card-item-content'>
+                <span>{item.title}</span>
+                <img src={item.img} alt='alt'/>
+            </div>
+            
+            {
+                userasd !== likeasd ?
+                    <Button onClick={() => dispatch(unlike(authUserLS.id, likeasd.id, checkLikes))}>Unlike</Button>
+                :
+                    <Button onClick={() => dispatch(like(authUserLS.id, item, checkLikes))}>Like</Button>
+            }
 
-            <Button onClick={() => dispatch(unlike(likeasd.id, checkLikes))}>Unlike</Button>
-            <Button onClick={() => dispatch(like(authUser.id, item, checkLikes))}>Like</Button>
             <Button 
                 onClick={() => dispatch(addToCart(item))} 
                 color="primary"

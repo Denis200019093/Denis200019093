@@ -1,18 +1,19 @@
 .cards-list-wrapper {
     display: flex;
     flex-direction: column;
+    
     padding: 0 10px;
     .filter-cards-block {
         margin: 10px 0;
         button {
             border: 3px solid rgb(255, 34, 34);
-            color: rgba(255, 255, 255, 0.8);
+            color: #000;
             margin-right: 10px;
         }
     } 
     input {
-        background-color: rgb(75, 74, 74);
-        color: rgba(255, 255, 255, 0.8);
+        background-color: rgb(253, 235, 235);
+        color: #000;
         border: none;
         outline: none;
         height: 40px;
@@ -21,19 +22,47 @@
     }
     .cards-lists {
         display: flex;
-        justify-content: space-between;
+        // justify-content: space-between;
         flex-wrap: wrap;
         flex-basis: 25%;
         .card-item {
             display: flex;
             flex-direction: column;
-            span {
+
+            flex-basis: 33%;
+            min-height: 350px;
+
+            transition: 0.2s;
+
+            &:hover {
+                background-color: rgb(248, 248, 248);
+                .card-item-content {
+                    img {
+                        width: 260px;
+                        height: 260px;
+                    }
+                }
+               
+            }
+            .card-item-content {
+                position: relative;
+                display: flex;
+                justify-content: space-between;
+                flex-basis: 100%;
+                span {
     
+                }
+                img {
+                    position: absolute;
+                    top: 0;
+                    right: 0;
+                    text-align: end;
+                    width: 250px;
+                    height: 250px;
+                    transition: 0.3s;
+                }
             }
-            img {
-                width: 150px;
-                height: 150px;
-            }
+           
             button {
                 border: 3px solid #3f51b5;
             }

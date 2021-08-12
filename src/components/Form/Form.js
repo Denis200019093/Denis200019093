@@ -1,30 +1,11 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Button } from '@material-ui/core';
 
-import { 
-    getUsers,
+import { useInput } from '../../hooks/validationForm'
 
-    userNickname, 
-    userEmail, 
-    userPassword,  
-
-    correctNicknameFunc,
-    errorNickNameFunc,
-
-    correctEmailFunc, 
-    errorEmailFunc,
-
-    correctPasswordFunc,
-    errorPasswordFunc,
-
-    formValidFunc,
-    whatFormFunc,
-
-    signUp,
-    signIn,
-    logOut
-} from '../../redux/actions/formActions'
+import { getUsers } from '../../redux/actions/userActions'
+import { signUp, signIn, logOut, toggleFormFunc } from '../../redux/actions/formActions'
 
 import './Form.scss'
 
@@ -32,170 +13,80 @@ function Form() {
 
     const dispatch = useDispatch()
     const state = useSelector(state => ({
-        users: state.auth.users,
-        // Info about the user
-        nickName: state.auth.nickName,
-        email: state.auth.email,
-        password: state.auth.password,
-        // Validation nickname
-        correntNickName: state.auth.correntNickName,
-        errorNickNameMessage: state.auth.errorNickNameMessage,
-        // Validation email
-        correntEmail: state.auth.correntEmail,
-        errorEmailMessage: state.auth.errorEmailMessage,
-        // Validation password
-        correntPassword: state.auth.correntPassword,
-        errorPasswordMessage: state.auth.errorPasswordMessage,
-
-        // Form valid
-        formValid: state.auth.formValid,
-        formSignUp: state.auth.formSignUp
+        users: state.users.users,
+        toggleForm: state.auth.toggleForm
     }))
 
-    const { 
-        users, 
-
-        nickName,
-        email, 
-        password, 
-
-        correntNickName,
-        errorNickNameMessage,
-
-        correntEmail, 
-        errorEmailMessage,
-
-        correntPassword,
-        errorPasswordMessage,
-
-        formValid,
-        formSignUp
-    } = state
+    const { users, toggleForm } = state
 
     useEffect(() => {
         dispatch(getUsers())
-    }, [dispatch])
-   
-    useEffect(() => {
-        if ( correntNickName && correntEmail && correntPassword ) {
-            dispatch(formValidFunc(false))
-        } else {
-            dispatch(formValidFunc(true))
-        }
-        
-    }, [correntNickName, correntEmail, correntPassword, dispatch])
-
-    const useInput = initialValue => {
-        const [ value, setValue ] = useState(initialValue)
-        const [ isDirty, setDirty ] = useState(initialValue)
-
-        const onChange = e => {
-            setValue(e.target.value)
-        }
-
-        const onBLur = e => {
-
-        }
-
-
-        return {
-
-        }
-    }
-
-    const nickNameHandler = e => {
-        dispatch(userNickname(e.target.value))
-
-        const nicknameValidation = /^[a-z0-9_-]{3,16}$/
-
-        if ( !nicknameValidation.test(String(e.target.value).toLowerCase()) ) {
-            dispatch(errorNickNameFunc('Длина никнейма 3-16 символов'))
-            dispatch(correctNicknameFunc(false))
-        } else {
-            dispatch(errorNickNameFunc('Nickname'))    
-            dispatch(correctNicknameFunc(true))
-        }
-
-    }
-
-    const emailHandler = e => {
-        dispatch(userEmail(e.target.value))
-
-        const emailValidation = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-
-        if ( !emailValidation.test(String(e.target.value).toLowerCase()) ) {
-            dispatch(errorEmailFunc('Некорректный емейл'))
-            dispatch(correctEmailFunc(false))
-        } else {
-            dispatch(errorEmailFunc('Email'))    
-            dispatch(correctEmailFunc(true))
-        }
-    }
+    }, [dispatch]) 
     
-    const passwordHandler = e => {
-        dispatch(userPassword(e.target.value))
+    const authUserLS = JSON.parse(localStorage.getItem('AUTH_USER'))
 
-        const passwordValidation = /^[a-z0-9_-]{3,16}$/
-
-        if ( !passwordValidation.test(String(e.target.value).toLowerCase()) ) {
-            dispatch(errorPasswordFunc('Некорректный пароль'))
-            dispatch(correctPasswordFunc(false))
-        } else {
-            dispatch(errorPasswordFunc('Password'))    
-            dispatch(correctPasswordFunc(true))
-        }
-    }
-
-    const submitHandlerSignUp = e => {
-        e.preventDefault()
-
-        dispatch(signUp( nickName, email, password ))
-    }
-    
-    const authUser = JSON.parse(localStorage.getItem('AUTH_USER'))
+    const nickname = useInput('', { isEmpty: true, minLength: 3, maxLength: 16 })
+    const email = useInput('', { isEmpty: true, minLength: 3, isEmail: true })
+    const password = useInput('', { isEmpty: true, minLength: 3, maxLength: 16 })
 
     const submitHandlerSignIn = e => {
-        e.preventDefault()
+        // e.preventDefault()
         
-        const user = users.find(item => item.email === email)
+        const user = users.find(item => item.email === email.value)
         
         if ( user ) {
-            localStorage.setItem('AUTH_USER', JSON.stringify(user))
+            localStorage.setItem('AUTH_USER', JSON.stringify({...user, logged: true}))
             dispatch(signIn())
         } else {
             dispatch(logOut())
             alert('Неверно')
         }
     }
-    
+
+    const submitHandlerSignUp = e => {
+        // e.preventDefault()
+
+        dispatch(signUp( nickname.value, email.value, password.value ))
+
+    }
+
+    // validation of forms to be in the folder hooks/validations.js
     return (
         <div className='form-page'>
-            <Button onClick={() => dispatch(whatFormFunc(false))}>Sign up</Button>
-            <Button disabled={authUser ? true : false} onClick={() => dispatch(whatFormFunc(true))}>Sign in</Button>
+            <Button onClick={() => dispatch(toggleFormFunc(false))}>Sign up</Button>
+            <Button disabled={authUserLS ? true : false} onClick={() => dispatch(toggleFormFunc(true))}>Sign in</Button>
             {
-                formSignUp ?
+                toggleForm ?
                 
                 // Sign in 
                 <form onSubmit={submitHandlerSignIn} className='form-signIn'>
                     {/* Sign in email*/}
                     <div className='form-fignIn-input-email'>
-                        <label htmlFor='email'>Email</label>
+                        <label htmlFor='email'>
+                            Email
+                        </label>
                         <input 
-                            onChange={emailHandler} 
-                            value={email} 
+                            onChange={e => email.onChange(e)} 
+                            onBlur={e => email.onBlur(e)}
+                            value={email.value} 
                             name='email'
-                            type='email'/>
+                            type='email'
+                        />
                     </div>
                     {/* Sign in password*/}
                     <div className='form-fignIn-input-password'>
-                        <label>Password</label>
+                        <label htmlFor='password'>
+                            Password
+                        </label>
                         <input 
-                            onChange={passwordHandler}
-                            value={password}
+                            onChange={e => password.onChange(e)}
+                            onBlur={e => password.onBlur(e)}
+                            value={password.value}
                             name='password'
-                            type='password'/>
+                            type='password'
+                        />
                     </div>
-                    <Button disabled={!email || !password} variant="contained" type='submit' color='primary'>Sign in</Button>
+                    <Button disabled={ !email.inputValid || !password.inputValid } variant="contained" type='submit' color='primary'>Sign in</Button>
                 </form>
             : 
             // SIgn up
@@ -203,42 +94,50 @@ function Form() {
                     {/* Sign up nickname */}
                     <div className='form-fignUp-input-name'>
                         <label htmlFor='nickname'>
-                            { 'Nickname' && <div>{errorNickNameMessage}</div>}
+                            {(nickname.isDirty && nickname.isEmpty) && <div style={{color: 'red'}}>Поле не может быть пустым</div>}
+                            {(nickname.isDirty && nickname.minLengthError) && <div style={{color: 'red'}}>Слишком короткий никнейм</div>}
+                            {(nickname.isDirty && nickname.maxLengthError) && <div style={{color: 'red'}}>Слишком длинный никнейм</div>}
                         </label>   
                         <input 
-                            onChange={nickNameHandler}
-                            name='nickname' 
-                            value={nickName} 
+                            onChange={e => nickname.onChange(e)} 
+                            onBlur={e => nickname.onBlur(e)}
+                            value={nickname.value} 
+                            name='nnickname'
                             type='text'/>
+                            
                     </div>
                     {/* Sign up email */}
                     <div className='form-fignUp-input-email'>
                         <label htmlFor='email'>
-                            { 'Email' && <div>{errorEmailMessage}</div>}
+                            {(email.isDirty && email.isEmpty) && <div style={{color: 'red'}}>Поле не может быть пустым</div>}
+                            {(email.isDirty && email.minLengthError) && <div style={{color: 'red'}}>Неккоректная длина</div>}
+                            {(email.isDirty && email.emailError) && <div style={{color: 'red'}}>Неккоректный емейл</div>}
                         </label>
                         <input 
-                            onChange={emailHandler}
-                            name='email' 
-                            value={email}  
+                            onChange={e => email.onChange(e)} 
+                            onBlur={e => email.onBlur(e)}
+                            value={email.value} 
+                            name='email'
                             type='email'/>
                     </div>
                     {/* Sign up password */}
                     <div className='form-fignUp-input-password'>
-                        <label htmlFor='password'>
-                            { 'Password' && <div>{errorPasswordMessage}</div>}
+                         <label htmlFor='password'>
+                            {(password.isDirty && password.isEmpty) && <div style={{color: 'red'}}>Поле не может быть пустым</div>}
+                            {(password.isDirty && password.maxLengthError) && <div style={{color: 'red'}}>Слишком длинный пароль</div>}
+                            {(password.isDirty && password.minLengthError) && <div style={{color: 'red'}}>Неккоректная длина</div>}
                         </label>
                         <input 
-                            onChange={passwordHandler}
+                            onChange={e => password.onChange(e)}
+                            onBlur={e => password.onBlur(e)}
+                            value={password.value}
                             name='password'
-                            value={password} 
                             type='password'/>
                     </div>
-                    <Button disabled={formValid}  type='submit' variant="contained" color='primary'>Sign up</Button>
+                    <Button disabled={ !nickname.inputValid || !email.inputValid || !password.inputValid} type='submit' variant="contained" color='primary'>Sign up</Button>
         
                 </form>
-            }
-            
-            
+            }       
         </div>
     )
 }

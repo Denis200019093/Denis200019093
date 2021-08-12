@@ -8,13 +8,8 @@ import {
     MINUS_ITEM_CART, 
     OPEN_CART,
     CLOSE_CART,
-    GET_ORDERS,
-    CONFIRM_ORDER,
     CLEAR_CART 
 } from '../types'
-
-const ordersURL = 'http://localhost:3005/orders'
-// const ordersURL = 'http://localhost:3005/orders?_limit=5'
 
 export const renderCart = cartData => dispatch => {
     try {
@@ -71,29 +66,6 @@ export const closeCart = () => dispatch => {
     try {
 
         dispatch({ type: CLOSE_CART })
-    } catch(e) {
-        console.log(e);
-    }
-}
-
-export const getOrders = () => async dispatch => {
-    try {
-        const res = await axios.get(`${ordersURL}?_limit=5`)
-        const data = await res.data
-        
-        dispatch({ type: GET_ORDERS, payload: data })
-    } catch(e) {
-        console.log(e);
-    }
-}
-
-export const confirmOrder = orders => dispatch => {
-    try {
-        axios.post(`${ordersURL}`, { 
-            items: orders 
-        })
-
-        dispatch({ type: CONFIRM_ORDER, payload: { items: orders } })
     } catch(e) {
         console.log(e);
     }

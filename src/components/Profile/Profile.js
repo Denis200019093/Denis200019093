@@ -10,22 +10,19 @@ import './Profile.scss'
 
 function Profile() {
 
-    const authUser = JSON.parse(localStorage.getItem('AUTH_USER'))
+    const authUserLS = JSON.parse(localStorage.getItem('AUTH_USER'))
     const dispatch = useDispatch()
     const stateCart = useSelector(state => state.cart.openCart)
     const cart = useSelector(state => state.cart.cart)
     const loggedUser = useSelector(state => state.auth.loggedUser)
-    // const auth = useSelector(state => state.auth.authUser)
 
-
-    console.log(authUser);
     return (
         <div className='profile'>
             {
                 
-                authUser ?
+                authUserLS ?
                     <div className='profile-auth-user'>
-                        <span>{authUser.name}</span>
+                        <span>{authUserLS.name}</span>
                         <i className="fas fa-user"></i>
                         <div onClick={() => {
                             dispatch(logOut())

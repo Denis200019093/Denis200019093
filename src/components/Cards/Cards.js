@@ -14,10 +14,12 @@ function Cards() {
         cards: state.cards.cards,
         filter: state.cards.filter,
         search: state.cards.search,
-        searchType: state.cards.searchType
+        searchType: state.cards.searchType,
+        failureRequest: state.users.failure
+
     }))
 
-    const { cards, filter, search, searchType } = state
+    const { cards, filter, search, searchType, failureRequest } = state
 
     useEffect(() => {
         dispatch(renderCards())
@@ -30,6 +32,9 @@ function Cards() {
         <div className='cards-list-wrapper'>
             <Sidebar/>
             <input onChange={e => dispatch(searchCards(e.target.value))} value={search} type='text' placeholder={`Search ${searchType}`}/>
+            {failureRequest ? 
+                <div>Что бы иметь возможность лайкать товар, нужно авторизоваться!</div>    
+            : null}
             <div className='cards-lists'>
                 {
                     filter.length ? filterData.map(item => ( 

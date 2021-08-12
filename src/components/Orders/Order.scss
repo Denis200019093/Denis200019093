@@ -1,6 +1,7 @@
 .order-page {
     padding-top: 50px;
     .order-page-items {
+
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -8,20 +9,40 @@
         // background-color: #01d15b;
         // border: 2px solid #00a046;
         margin: 0 100px 30px 100px;
+        border: 0.5px solid rgb(241, 239, 239);
+        padding: 10px;
         &:hover {
-            transform: scale(1.03);
+            border-radius: 5px;
+            box-shadow: 0 0 1px #000;
         }
+
         .order-item-header {
-            
+            position: relative;
+
             display: flex;
             justify-content: space-between;
             align-items: center;
             width: 100%;
             padding: 10px;
-            border: 3px solid #00a046;
-            background-color: #01d15b;
+
+            &::before {
+                content: '';
+                position: absolute;
+                top: 10%;
+                left: 5px;
+    
+                height: 80%;
+                width: 6px;
+
+                border-radius: 10px;
+    
+                background-color: green;
+    
+                z-index: 5;
+            }
             .order-header-status {
                 flex-basis: 30%;
+                margin-left: 15px;
             }
             .order-header-total {
                 display: flex;
@@ -29,7 +50,7 @@
                 align-items: center;
                 flex-basis: 30%;
                 
-                color: rgba(255, 255, 255, 0.9);
+                color: #000;
                 span {
 
                 }
@@ -75,7 +96,6 @@
             display: flex;
             justify-content: space-between;
 
-            border: 3px solid #00a046;
             width: 100%;
             padding: 10px;
             display: none;

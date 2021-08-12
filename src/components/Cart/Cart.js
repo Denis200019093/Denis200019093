@@ -9,9 +9,10 @@ import {
     removeFromCart,
     plusCartItem, 
     minusCartItem, 
-    confirmOrder,
     clearCart 
 } from '../../redux/actions/cartActions'
+
+import { confirmOrder } from '../../redux/actions/ordersActions'
 
 function Cart() {
 
@@ -83,7 +84,7 @@ function Cart() {
                     </div>
                 </div>
             : 
-                <div className='clear' style={{color: '#fff'}}>пусто</div>
+                <div className='clear' style={{color: '#000', textAlign: 'center', fontSize: '28px'}}>пусто</div>
             }     
         </div>
     )

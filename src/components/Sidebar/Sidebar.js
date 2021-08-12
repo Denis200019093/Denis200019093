@@ -19,7 +19,10 @@ function Sidebar() {
     return (
         <div className='filter-cards-block'>
             <Button 
-                style={{backgroundColor: activeBtn === 0 ? 'red' : ''}} 
+                style={{
+                    backgroundColor: activeBtn === 0 ? 'red' : '',
+                    color: activeBtn === 0 ? '#fff' : ''
+                }} 
                 onClick={() => {
                     setActivebtn(0)
                     dispatch(clearFilter())
@@ -28,7 +31,10 @@ function Sidebar() {
             >All</Button>
             {
                 btns.map((item) => (
-                    <Button style={{backgroundColor: activeBtn === item.id ? 'red' : ''}} onClick={() => {
+                    <Button style={{
+                        backgroundColor: activeBtn === item.id ? 'red' : '',
+                        color: activeBtn === item.id ? '#fff' : ''
+                    }} onClick={() => {
                         setActivebtn(item.id) 
                         dispatch(filterCards(item.value))
                         dispatch(searchType(item.value))

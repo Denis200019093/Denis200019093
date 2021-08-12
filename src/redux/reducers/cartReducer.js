@@ -7,6 +7,7 @@ import {
     OPEN_CART,
     CLOSE_CART,
     GET_ORDERS, 
+    LOAD_ORDERS_AFTER_SCROLL,
     CONFIRM_ORDER,
     CLEAR_CART 
 } from '../types'
@@ -14,6 +15,8 @@ import {
 const initialState = {
     cart: [],
     orders: [],
+    countOrderLoad: 10,
+    fetching: true,
     openCart: false
 }
 
@@ -23,7 +26,7 @@ export const cartReducer = (state = initialState, { type, payload }) => {
         case RENDER_CART:
             return {
                 ...state,
-                cart: payload,
+                cart: payload
             }
         case ADD_TO_CART:
             const newItemCart = {
@@ -91,16 +94,6 @@ export const cartReducer = (state = initialState, { type, payload }) => {
             return {
                 ...state,
                 openCart: false
-            }
-        case GET_ORDERS:
-            return {
-                ...state,
-                orders: payload
-            }
-        case CONFIRM_ORDER:
-            return {
-                ...state,
-                orders: state.orders.concat(payload)
             }
         case CLEAR_CART:
             return {

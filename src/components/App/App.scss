@@ -1,5 +1,52 @@
 .app {
-    // position: relative;
-
+    position: relative;
     margin-left: 15%;
+
+    .page {
+        position: absolute;
+        width: 100%;
+    }
+}
+
+// .page-enter {
+//     opacity: 0;
+//     transform: scale(1.1);
+//   }
+  
+  .page-enter-active {
+    animation: fade-in 0.3s forwards;
+  }
+  
+//   .page-exit {
+//     opacity: 1;
+//     transform: scale(1);
+//   }
+  
+  .page-exit-active {
+    animation: fade-out 0.1s forwards;
+
+  }
+  
+
+
+@keyframes fade-in {
+    0% {
+        opacity: 0;
+        transform: translateY(-100%);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fade-out {
+    0% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(100%);
+    }
 }
