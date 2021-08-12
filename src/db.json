@@ -2,14 +2,14 @@
   "boards": [
     {
       "id": 1,
-      "title": "Televizor",
+      "title": "Televizor top",
       "price": 20000,
       "firm": "Sumsung",
       "img": "https://images.samsung.com/is/image/samsung/ru-fhd-t5300-ue32t5300auxru-frontblack-225926888?$720_576_PNG$"
     },
     {
       "id": 2,
-      "title": "Monitor",
+      "title": "Monitor toooop",
       "price": 17500,
       "firm": "Sumsung",
       "img": "https://images.samsung.com/is/image/samsung/ru-ur55-lu28r550uqixci-frontblack-205854114?$720_576_PNG$"
@@ -37,7 +37,7 @@
     },
     {
       "id": 6,
-      "title": "Monitor",
+      "title": "Monitor mini",
       "price": 17500,
       "firm": "Sumsung",
       "img": "https://images.samsung.com/is/image/samsung/ru-ur55-lu28r550uqixci-frontblack-205854114?$720_576_PNG$"
@@ -65,21 +65,21 @@
     },
     {
       "id": 10,
-      "title": "Monitor",
+      "title": "Monitor big",
       "price": 17500,
       "firm": "Sumsung",
       "img": "https://images.samsung.com/is/image/samsung/ru-ur55-lu28r550uqixci-frontblack-205854114?$720_576_PNG$"
     },
     {
       "id": 11,
-      "title": "Telephon",
+      "title": "Telephon XXL",
       "price": 10000,
       "firm": "Apple",
       "img": "https://www.gfxpng.com/uploads/posts/2021-05/1620289041_apple-iphone-12-transparent-images-png.webp"
     },
     {
       "id": 12,
-      "title": "Samokat",
+      "title": "Samokat MI 10",
       "price": 12000,
       "firm": "MI",
       "img": "https://kremlinstore.ru/wa-data/public/shop/products/38/23/12338/images/51887/51887.400.png"
@@ -147,24 +147,17 @@
       "likes": [
         {
           "id": 1,
-          "title": "Televizor",
+          "title": "Televizor top",
           "price": 20000,
           "firm": "Sumsung",
           "img": "https://images.samsung.com/is/image/samsung/ru-fhd-t5300-ue32t5300auxru-frontblack-225926888?$720_576_PNG$"
         },
         {
           "id": 2,
-          "title": "Monitor",
+          "title": "Monitor toooop",
           "price": 17500,
           "firm": "Sumsung",
           "img": "https://images.samsung.com/is/image/samsung/ru-ur55-lu28r550uqixci-frontblack-205854114?$720_576_PNG$"
-        },
-        {
-          "id": 3,
-          "title": "Telephon",
-          "price": 10000,
-          "firm": "Apple",
-          "img": "https://www.gfxpng.com/uploads/posts/2021-05/1620289041_apple-iphone-12-transparent-images-png.webp"
         }
       ],
       "id": 2

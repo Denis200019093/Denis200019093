@@ -5,7 +5,7 @@ import { Container } from 'react-bootstrap'
 import Cards from '../Cards'
 import Cart from '../Cart'
 import Orders from '../Orders'
-import Profile from '../Profile'
+import Sidebar from '../Sidebar'
 import Form from '../Form'
 
 import './App.scss'
@@ -20,7 +20,7 @@ function App() {
 
     return (
         <div className='app'>
-            <Profile/>
+            <Sidebar/>
             <Cart/>
                 {routes.map(({path, Component}) => 
                     <Route key={path} exact path={path}>

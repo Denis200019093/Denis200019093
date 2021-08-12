@@ -1,46 +1,60 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { Link } from 'react-router-dom'
 import { Button } from '@material-ui/core';
-import { useDispatch } from 'react-redux'
 
-import { filterCards, searchType, clearFilter } from '../../redux/actions/cardsActions'
+import { openCart, closeCart } from '../../redux/actions/cartActions'
+import { logOut } from '../../redux/actions/formActions'
 
-const btns = [
-    {id: 1, title: 'Apple device', value: 'apple'},
-    {id: 2, title: 'MI device', value: 'mi'},
-    {id: 3, title: 'SUMSUNG device', value: 'sumsung'}
-]
+import './Sidebar.scss'
 
 function Sidebar() {
 
-    const [ activeBtn, setActivebtn ] = useState(0)
-
+    const authUserLS = JSON.parse(localStorage.getItem('AUTH_USER'))
     const dispatch = useDispatch()
+    const stateCart = useSelector(state => state.cart.openCart)
+    const cart = useSelector(state => state.cart.cart)
+    const loggedUser = useSelector(state => state.auth.loggedUser)
 
     return (
-        <div className='filter-cards-block'>
-            <Button 
-                style={{
-                    backgroundColor: activeBtn === 0 ? 'red' : '',
-                    color: activeBtn === 0 ? '#fff' : ''
-                }} 
-                onClick={() => {
-                    setActivebtn(0)
-                    dispatch(clearFilter())
-                    dispatch(searchType(''))
-                }}
-            >All</Button>
+        <div className='profile'>
             {
-                btns.map((item) => (
-                    <Button style={{
-                        backgroundColor: activeBtn === item.id ? 'red' : '',
-                        color: activeBtn === item.id ? '#fff' : ''
-                    }} onClick={() => {
-                        setActivebtn(item.id) 
-                        dispatch(filterCards(item.value))
-                        dispatch(searchType(item.value))
-                    }} color="secondary" key={item.id}>{item.title}</Button>
-                ))
+                
+                authUserLS ?
+                    <div className='profile-auth-user'>
+                        <span>{authUserLS.name}</span>
+                        <i className="fas fa-user"></i>
+                        <div onClick={() => {
+                            dispatch(logOut())
+                            localStorage.removeItem('AUTH_USER')
+                        }} className='profile-logOut'>Log out</div>
+                    </div>
+                : 
+                    <Link to='/form/'>Login</Link>
+                   
             }
+            <Link onClick={() => dispatch(closeCart())} to={'/'}>
+                <Button color='primary'>Home</Button>
+            </Link>
+
+            {
+                stateCart ?
+                    <Button onClick={() => dispatch(closeCart())} color='primary'>Close cart</Button>
+                :
+                    <Button className='open-cart-btn' onClick={() => dispatch(openCart())} color='primary'>
+                        <div>{cart.length}</div>
+                        Cart
+                    </Button>
+            }
+     
+            <Link onClick={() => dispatch(closeCart())} to={'/orders/'}>
+                <Button color='primary'>Orders</Button>
+            </Link>
+            <Link onClick={() => dispatch(closeCart())} to={'/form/'}>
+                <Button color='primary'>Auth</Button>
+            </Link>
+
+            
         </div>
     )
 }

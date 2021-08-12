@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux'
 
 import { renderCards, searchCards } from '../../redux/actions/cardsActions'
 import CardItem from '../CardItem'
-import Sidebar from '../Sidebar'
+import FilterBar from '../FilterBar'
 
 import './Cards.scss'
 
@@ -30,7 +30,7 @@ function Cards() {
 
     return (
         <div className='cards-list-wrapper'>
-            <Sidebar/>
+            <FilterBar/>
             <input onChange={e => dispatch(searchCards(e.target.value))} value={search} type='text' placeholder={`Search ${searchType}`}/>
             {failureRequest ? 
                 <div>Что бы иметь возможность лайкать товар, нужно авторизоваться!</div>    
